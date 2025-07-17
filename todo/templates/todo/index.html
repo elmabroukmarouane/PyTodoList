@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>To-Do List</title>
+    <style>
+        .completed {
+            text-decoration: line-through;
+            color: gray;
+        }
+    </style>
+    <script>
+        function deleteTask(taskId) {
+            fetch(`/delete/${taskId}/`).then(res => res.json()).then(data => {
+                if (data.success) document.getElementById(`task-${taskId}`).remove();
+            });
+        }
+
+        function toggleComplete(taskId) {
+            fetch(`/toggle/${taskId}/`).then(res => res.json()).then(data => {
+                const taskElem = document.getElementById(`task-title-${taskId}`);
+                if (data.completed) {
+                    taskElem.classList.add("completed");
+                } else {
+                    taskElem.classList.remove("completed");
+                }
+            });
+        }
+
+        function editTask(taskId) {
+            const taskElem = document.getElementById(`task-title-${taskId}`);
+            const currentText = taskElem.innerText;
+            const input = document.createElement("input");
+            input.type = "text";
+            input.value = currentText;
+
+            input.onblur = () => {
+                fetch(`/update/${taskId}/`, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': getCookie('csrftoken'),
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    body: `title=${encodeURIComponent(input.value)}`
+                })
+                .then(res => res.json())
+                .then(data => {
+                    taskElem.innerText = data.title;
+                    taskElem.onclick = () => editTask(taskId);
+                });
+
+                taskElem.innerHTML = '';
+                taskElem.appendChild(document.createTextNode(input.value));
+            };
+
+            taskElem.innerHTML = '';
+            taskElem.appendChild(input);
+            input.focus();
+        }
+
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+    </script>
+</head>
+<body>
+    <h1>My To-Do List</h1>
+
+    <form method="post" action="/add/">
+        {% csrf_token %}
+        <input type="text" name="title" placeholder="New Task" required>
+        <button type="submit">Add</button>
+    </form>
+
+    <ul>
+        {% for task in tasks %}
+            <li id="task-{{ task.id }}">
+                <input type="checkbox" {% if task.completed %}checked{% endif %} onchange="toggleComplete({{ task.id }})">
+                <span id="task-title-{{ task.id }}"
+                      class="{% if task.completed %}completed{% endif %}"
+                      onclick="editTask({{ task.id }})">
+                    {{ task.title }}
+                </span>
+                <button onclick="deleteTask({{ task.id }})">Delete</button>
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
