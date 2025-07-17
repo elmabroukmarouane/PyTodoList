@@ -31,8 +31,8 @@ This project is designed as a single-page app with Bootstrap 5 styling and minim
 
 1. Clone the repository:
     ```bash
-    git clone https://github.com/elmabroukmarouane/PyTodoList.git
-    cd PyTodoList
+    git clone https://github.com/yourusername/django-todo-app.git
+    cd django-todo-app
     ```
 
 2. Create and activate a virtual environment (recommended):
@@ -75,23 +75,25 @@ This project is designed as a single-page app with Bootstrap 5 styling and minim
 
 ## Project Structure
 
+```
 todo/
 ├── migrations/
 ├── templates/
-│ └── todo/
-│ └── index.html
+│   └── todo/
+│       └── index.html
 ├── static/
-│ └── css/
-│ └── styles.css # custom styles including dark mode & completed tasks
-├── init.py
+│   └── css/
+│       └── styles.css  # custom styles including dark mode & completed tasks
+├── __init__.py
 ├── admin.py
 ├── apps.py
-├── models.py # Task model with title, completed, due_date, priority, timestamps
+├── models.py          # Task model with title, completed, due_date, priority, timestamps
 ├── tests.py
-├── urls.py # URL patterns including add, toggle, delete, export
-├── views.py # Views with AJAX support and export to CSV
+├── urls.py            # URL patterns including add, toggle, delete, export
+├── views.py           # Views with AJAX support and export to CSV
 manage.py
-
+README.md
+```
 
 ---
 
@@ -131,5 +133,5 @@ manage.py
 
 ## License
 
-MIT License © 2025 — MEL
+MIT License © 2025 - MEL
 
