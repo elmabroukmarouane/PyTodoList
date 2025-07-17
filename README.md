@@ -31,8 +31,8 @@ This project is designed as a single-page app with Bootstrap 5 styling and minim
 
 1. Clone the repository:
     ```bash
-    git clone https://github.com/yourusername/django-todo-app.git
-    cd django-todo-app
+    git clone https://github.com/elmabroukmarouane/PyTodoList.git
+    cd PyTodoList
     ```
 
 2. Create and activate a virtual environment (recommended):
