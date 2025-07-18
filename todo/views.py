@@ -69,10 +69,10 @@ def export_tasks_csv(request):
         writer.writerow([
             task.title.strip(),
             'Yes' if task.completed else 'No',
-            task.due_date.strftime('%Y-%m-%d') if task.due_date else '',
+            task.due_date.strftime('%d/%m/%Y') if task.due_date else '',
             {1: 'High', 2: 'Medium', 3: 'Low'}.get(task.priority, 'N/A'),
-            task.created_at.strftime('%Y-%m-%d %H:%M'),
-            task.updated_at.strftime('%Y-%m-%d %H:%M'),
+            task.created_at.strftime('%d/%m/%Y %H:%M'),
+            task.updated_at.strftime('%d/%m/%Y %H:%M'),
         ])
 
     return response
